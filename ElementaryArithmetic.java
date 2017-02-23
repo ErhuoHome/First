@@ -149,11 +149,9 @@ public class ElementaryArithmetic {
                         //求解并最简化
                         fz=a*d+b*c;
                         fm=c*d;
-                        System.out.println(fz+" "+fm);
                         k=divisor(fz,fm);
                         fz=fz/k;
                         fm=fm/k;
-                        System.out.println(fz+" "+fm);
                         System.out.print(a + "/" + c + "" + sign + "" + b + "/" + d + "=");
                         inputC = input.next();
                         if(inputC.equals(fz+"/"+fm)){
@@ -172,19 +170,16 @@ public class ElementaryArithmetic {
                     case 1:
                         sign='-';
 
-                        int flag=0;
                         //求解并最简化
                         fz=a*d-b*c;
                         fm=c*d;
                         System.out.println(fm);
                         if(fz<0){
-                            flag=1;
                             fz*=-1;
                         }
                         k=divisor(fz,fm);
                         fz=fz/k;
                         fm=fm/k;
-                        System.out.println(fz+" "+fm);
                         System.out.print(a + "/" + c + "" + sign + "" + b + "/" + d + "=");
                         inputC = input.next();
                         if(inputC.equals(fz+"/"+fm)){
@@ -212,7 +207,6 @@ public class ElementaryArithmetic {
                         k=divisor(fz,fm);
                         fz=fz/k;
                         fm=fm/k;
-                        System.out.println(fz+" "+fm);
                         System.out.print(a + "/" + c + "" + sign + "" + b + "/" + d + "=");
                         inputC = input.next();
                         if(inputC.equals(fz+"/"+fm)){
@@ -233,7 +227,6 @@ public class ElementaryArithmetic {
 
                         fz=fz/k;
                         fm=fm/k;
-                        System.out.println(fz+" "+fm);
                         System.out.print(a + "/" + c + "" + sign + "" + b + "/" + d + "=");
                         inputC = input.next();
 
@@ -254,5 +247,7 @@ public class ElementaryArithmetic {
             }
 
         }
+        System.out.println("True:"+trueCount);
+        System.out.println("Accuracy:" + trueCount*20+"%");
     }
 }
