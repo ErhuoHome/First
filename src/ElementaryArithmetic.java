@@ -39,7 +39,8 @@ public class ElementaryArithmetic {
 
         int oprator;        //运算符
         char sign;                  //运算符号
-        int result;         //结果
+        int resultOfInput;         //用户输入结果
+        int result;                 //计算结果
         int trueCount=0;    //正确率统计
         int count=0;        //总题数
         int num=0;          //当前题数
@@ -48,11 +49,13 @@ public class ElementaryArithmetic {
 
         int arithmeticModality;     //运算形式
 
-        int[] resultForDivisor=new int[2];
-        int resultOfProperFraction;
-        int resultOfProperFractionForDivisor;
-        String inputC;
+        int[] resultForDivisor=new int[2];      //最大公约数运算结果
+        int resultOfProperFraction;              //真分数计算结果
+        int resultOfProperFractionForDivisor;    //真分数最大公约数运算结果
+
+        String inputC;                           //字符串输入
         Scanner input=new Scanner(System.in);
+
         System.out.println("Please input the amount of arithmetic:");
 
         //检测输入，如果非integer型数值，报错并结束程序
@@ -73,66 +76,59 @@ public class ElementaryArithmetic {
             num++;
 
             //随机产生数值、运算符、计算形式
-            arithmeticModality=(int)(Math.random()*2);
-            oprator =(int)(Math.random()*4);
-            numerator[0]=(int)(Math.random()*10+1);
-            numerator[1]=(int)(Math.random()*10+1);
-            denominator[0]=(int)(Math.random()*10)+1;
-            denominator[1]=(int)(Math.random()*10)+1;
+            arithmeticModality = (int)(Math.random()*2);
+            oprator = (int)(Math.random()*4);
+            numerator[0] = (int)(Math.random()*10)+1;
+            numerator[1] = (int)(Math.random()*10)+1;
+            denominator[0] = (int)(Math.random()*10)+1;
+            denominator[1] = (int)(Math.random()*10)+1;
+
+            arithmeticModality = 0;
+
             if(arithmeticModality == 0) {
                 switch (oprator) {
                     case 0:
                         sign = '+';
-                        System.out.print(numerator[0] + "" + sign + "" + numerator[0] + "=");
-                        result = input.nextInt();
-                        if(result == numerator[0] + numerator[1]){
-                            System.out.println("True");trueCount++;
-                        } else{
-                            System.out.println("Flase");
-                        }
+                        result = numerator[0] + numerator[1];
                         break;
 
                     case 1:
                         sign = '-';
-                        System.out.print( numerator[0] + "" + sign + "" + numerator[1] + "=" );
-                        result = input.nextInt();
-                        if( result == numerator[0] - numerator[1] ){
-                            trueCount++;System.out.println("True");
-                        } else{
-                            System.out.println("Flase");
-                        }
+                        result = numerator[0] - numerator[1];
                         break;
 
                     case 2:
                         sign = '*';
-                        System.out.print( numerator[0] + "" + sign + "" + numerator[1] + "=" );
-                        result = input.nextInt();
-                        if( result == numerator[0] * numerator[1] ){
-                            trueCount++;System.out.println("True");
-                        } else{
-                            System.out.println("Flase");
-                        }
+                        result = numerator[0] * numerator[1];
                         break;
 
                     case 3:
                         sign = '/';
-                        System.out.print( numerator[0] + "" + sign + "" + numerator[1] + "=");
-                        inputC = input.next();
+                        result = ((int)(Math.random()*10)+1) * 100 + (int)(Math.random()*100)+1;
 
                         //计算最简式
                         resultForDivisor[0] = numerator[0];
                         resultForDivisor[1] = numerator[1];
                         numerator[0] = numerator[0] / divisor(resultForDivisor[0],resultForDivisor[1]);
                         numerator[1] = numerator[0] / divisor(resultForDivisor[0],resultForDivisor[1]);
-
-                        if(inputC.equals("" + numerator[0] / numerator[1] )){
-                            trueCount++;System.out.println("True");
-                        } else if (inputC.equals(numerator[0] + "/" + numerator[1])){
-                            System.out.println("True");trueCount++;
-                        } else {
-                            System.out.println("False");
-                        }
                         break;
+                    default:
+                        sign = '\0';
+                        result = ((int)(Math.random()*10)+1) * 100 + (int)(Math.random()*100)+1;
+                        break;
+                }
+                System.out.print(numerator[0] + "" + sign + "" + numerator[1] + "=");
+                System.out.println("" + result);
+                inputC = input.next();
+
+                if (inputC.equals(String.valueOf(result))) {
+                    System.out.println("True");trueCount++;
+                } else if (inputC.equals("" + numerator[0] / numerator[1] )) {
+                    trueCount++;System.out.println("True");
+                } else if (inputC.equals(numerator[0] + "/" + numerator[1])){
+                    System.out.println("True");trueCount++;
+                } else {
+                    System.out.println("False");
                 }
             } else {
                 //当分子与分母相同时重置
@@ -166,8 +162,9 @@ public class ElementaryArithmetic {
                     denominator[1] = temp;
                 }
 
-                int resultOfNumerator,resultOfDenominator;
-                int resultForDivisorOfOutcome;
+                int resultOfNumerator,resultOfDenominator;      //结果的分子与分母
+                int resultForDivisorOfOutcome;                  //结果分子分母的最大公约数
+
                 switch (oprator) {
                     case 0:
                         sign = '+';
@@ -178,17 +175,6 @@ public class ElementaryArithmetic {
                         resultForDivisorOfOutcome = divisor(resultOfNumerator, resultOfDenominator);
                         resultOfNumerator = resultOfNumerator / resultForDivisorOfOutcome;
                         resultOfDenominator = resultOfDenominator / resultForDivisorOfOutcome;
-
-                        System.out.print(numerator[0] + "/" + denominator[0] + "" + sign + "" + numerator[1] + "/" + denominator[1] + "=");
-                        inputC = input.next();
-
-                        if(inputC.equals(resultOfNumerator + "/" + resultOfDenominator)){
-                            trueCount++;System.out.println("True");
-                        } else if (inputC.equals("1")&&resultOfNumerator == 1){
-                            trueCount++;System.out.println("True");
-                        } else {
-                            System.out.println("False");
-                        }
                         break;
 
                     case 1:
@@ -197,24 +183,13 @@ public class ElementaryArithmetic {
                         //求解并最简化
                         resultOfNumerator = numerator[0] * denominator[1] - numerator[1] * denominator[0];
                         resultOfDenominator = denominator[0] * denominator[1];
-                        System.out.println(resultOfDenominator);
+
                         if(resultOfNumerator < 0){
                             resultOfNumerator *= -1;
                         }
                         resultForDivisorOfOutcome = divisor(resultOfNumerator, resultOfDenominator);
                         resultOfNumerator = resultOfNumerator / resultForDivisorOfOutcome;
                         resultOfDenominator = resultOfDenominator / resultForDivisorOfOutcome;
-                        System.out.print(numerator[0] + "/" + denominator[0] + "" + sign + "" + numerator[1] + "/" + denominator[1] + "=");
-                        inputC = input.next();
-                        if(inputC.equals(resultOfNumerator + "/" + resultOfDenominator)){
-                            trueCount++;System.out.println("True");
-                        } else if (inputC.equals("0") && resultOfNumerator == 0){
-                            System.out.println("True");trueCount++;
-                        } else if (inputC.equals("-" + resultOfNumerator + "/" + resultOfDenominator)){
-                            System.out.println("True");trueCount++;
-                        } else {
-                            System.out.println("False");
-                        }
                         break;
 
                     case 2:
@@ -225,13 +200,7 @@ public class ElementaryArithmetic {
                         resultForDivisorOfOutcome = divisor(resultOfNumerator,resultOfDenominator);
                         resultOfNumerator = resultOfNumerator / resultForDivisorOfOutcome;
                         resultOfDenominator = resultOfDenominator / resultForDivisorOfOutcome;
-                        System.out.print(numerator[0] + "/" + denominator[0] + "" + sign + "" + numerator[1] + "/" + denominator[1] + "=");
-                        inputC = input.next();
-                        if(inputC.equals(resultOfNumerator + "/" + resultOfDenominator)){
-                            trueCount++;System.out.println("True");
-                        } else {
-                            System.out.println("False");
-                        }
+
                         break;
 
                     case 3:
@@ -243,18 +212,29 @@ public class ElementaryArithmetic {
                         resultForDivisorOfOutcome = divisor(resultOfNumerator, resultOfDenominator);
                         resultOfNumerator = resultOfNumerator / resultForDivisorOfOutcome;
                         resultOfDenominator = resultOfDenominator / resultForDivisorOfOutcome;
-
-                        System.out.print(numerator[0] + "/" + denominator[0] + "" + sign + "" + numerator[1] + "/" + denominator[1] + "=");
-                        inputC = input.next();
-
-                        if(inputC.equals(resultOfNumerator+"/"+resultOfDenominator)){
-                            trueCount++;System.out.println("True");
-                        } else if (resultOfDenominator == 1 && inputC.equals(""+resultOfNumerator)){
-                            trueCount++; System.out.println("True");
-                        } else {
-                            System.out.println("False");
-                        }
                         break;
+                    default:
+                        sign='\0';
+                        resultOfNumerator=1;
+                        resultOfDenominator=2;
+                        break;
+                }
+                System.out.print(numerator[0] + "/" + denominator[0] + "" + sign + "" + numerator[1] + "/" + denominator[1] + "=");
+                inputC = input.next();
+
+                //判断对错
+                if(inputC.equals(resultOfNumerator + "/" + resultOfDenominator)){
+                    trueCount++;System.out.println("True");
+                } else if (inputC.equals('1') && resultOfNumerator == resultOfDenominator) {
+                    trueCount++;System.out.println("True");
+                } else if (inputC.equals('0') && resultOfNumerator == 0){
+                    trueCount++;System.out.println("True");
+                } else if (inputC.equals("-" + resultOfNumerator + "/" + resultOfDenominator)) {
+                    trueCount++;System.out.println("True");
+                } else if (resultOfDenominator == 1 && inputC.equals(""+resultOfNumerator)) {
+                    trueCount++;System.out.println("True");
+                } else {
+                    System.out.println("False");
                 }
             }
         }
