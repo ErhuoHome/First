@@ -5,8 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="962a98a6-8c7f-448f-afb8-670dff0123e0" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/A/ElementaryArithmetic.class" afterPath="$PROJECT_DIR$/out/production/A/ElementaryArithmetic.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    </list>
+    <list id="bfc616b5-1a87-445a-ad97-79d776d4c317" name="Failed commit: Default" comment="2017/3/24&#10;重复问题以及运算符号问题1.0">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/A/ElementaryArithmetic.class" afterPath="$PROJECT_DIR$/out/production/A/ElementaryArithmetic.class" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -598,7 +600,7 @@
       <workItem from="1489977685512" duration="1199000" />
       <workItem from="1490002588671" duration="1249000" />
       <workItem from="1490190221785" duration="1342000" />
-      <workItem from="1490267744948" duration="25257000" />
+      <workItem from="1490267744948" duration="25300000" />
     </task>
     <task id="LOCAL-00001" summary="2017/3/7">
       <created>1488879811964</created>
@@ -628,11 +630,18 @@
       <option name="project" value="LOCAL" />
       <updated>1490335378394</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="2017/3/24&#10;重复问题以及运算符号问题1.0">
+      <created>1490361970890</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1490361970890</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="38822000" />
+    <option name="totallyTimeSpent" value="38865000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -680,7 +689,8 @@
     <MESSAGE value="2017/3/23&#10;整理" />
     <MESSAGE value="2017/3/24&#10;错误再输入实现" />
     <MESSAGE value="2017/3/24&#10;重复问题以及运算符号问题" />
-    <option name="LAST_COMMIT_MESSAGE" value="2017/3/24&#10;重复问题以及运算符号问题" />
+    <MESSAGE value="2017/3/24&#10;重复问题以及运算符号问题1.0" />
+    <option name="LAST_COMMIT_MESSAGE" value="2017/3/24&#10;重复问题以及运算符号问题1.0" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
