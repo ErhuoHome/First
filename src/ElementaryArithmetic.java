@@ -1,8 +1,8 @@
 import com.sun.org.apache.xpath.internal.SourceTree;
+import jdk.nashorn.internal.ir.TernaryNode;
 
+import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by Administrator on 2017/2/11.
@@ -10,6 +10,9 @@ import java.util.regex.Pattern;
 
 
 public class ElementaryArithmetic {
+
+    final static int RandomRange = 10;
+    final static int OperatorNum = 4;
     //最大公约数
     public static int divisor(int denominator,int numerator){
         int temp;
@@ -40,12 +43,43 @@ public class ElementaryArithmetic {
             return false;
     }
 
+    //判断重复
+    public static boolean ArithmeticIsRepeat(ArrayList<String> arithmeticArray, String arithmeticStr, char sign){
+        if (arithmeticArray.isEmpty()){
+            arithmeticArray.add(arithmeticStr);
+        } else {
+            StringBuffer sb = new StringBuffer();
+            sb.append(arithmeticStr);
+            int arr_size = 0;
+            while (arr_size < arithmeticArray.size()){
+                if(arithmeticArray.get(arr_size).equals(arithmeticStr)) {
+                    return true;            //重复
+                } else if ((sign == '+' || sign == '*') && sb.reverse().toString().equals(arithmeticArray.get(arr_size))){
+                    return true;
+                }
+                arr_size++;
+            }
+        }
+        return false;
+    }
+
+    public static boolean IsZero(int[] denominator, int[] numerator) {
+        for(int i = 0;i<denominator.length;i++){
+            if(denominator[i] == 0 || numerator[i] == 0){
+                return true;
+            }
+        } return false;
+    }
+
     public static void main(String[] args) throws InterruptedException {
 
-        int[] denominator=new int[3];    //分子分母声明
-        int[] numerator=new int[3];
+        int[] denominator=new int[2];    //分子分母声明
+        int[] numerator=new int[2];
 
-        int oprator;        //运算符
+        ArrayList<String> arithmeticArray = new ArrayList<String>();        //记录算式，防止重复
+        String arithmeticStr =null;                                         //算式
+
+        int operator;        //运算符
         char sign;                  //运算符号
         int resultOfInput;         //用户输入结果
         int result;                 //计算结果
@@ -88,15 +122,17 @@ public class ElementaryArithmetic {
 
             //随机产生数值、运算符、计算形式
             arithmeticModality = (int)(Math.random()*2);
-            oprator = (int)(Math.random()*4);
-            numerator[0] = (int)(Math.random()*10)+1;
-            numerator[1] = (int)(Math.random()*10)+1;
-            denominator[0] = (int)(Math.random()*10)+1;
-            denominator[1] = (int)(Math.random()*10)+1;
+            operator = (int)(Math.random()*OperatorNum);
 
+            while(IsZero(denominator, numerator)){
+                numerator[0] = (int)(Math.random()*RandomRange)+1;
+                numerator[1] = (int)(Math.random()*RandomRange)+1;
+                denominator[0] = (int)(Math.random()*RandomRange)+1;
+                denominator[1] = (int)(Math.random()*RandomRange)+1;
+            }
             if(arithmeticModality == 0) {
                 inputCount = 0;
-                switch (oprator) {
+                switch (operator) {
                     case 0:
                         sign = '+';
                         result = numerator[0] + numerator[1];
@@ -108,13 +144,13 @@ public class ElementaryArithmetic {
                         break;
 
                     case 2:
-                        sign = '*';
+                        sign = '×';
                         result = numerator[0] * numerator[1];
                         break;
 
                     case 3:
-                        sign = '/';
-                        result = ((int)(Math.random()*10)+1) * 100 + (int)(Math.random()*100)+1;
+                        sign = '÷';
+                        result = ((int)(Math.random() * 1000)+1);
 
                         //计算最简式
                         resultForDivisor[0] = numerator[0];
@@ -124,16 +160,21 @@ public class ElementaryArithmetic {
                         break;
                     default:
                         sign = '\0';
-                        result = ((int)(Math.random()*10)+1) * 100 + (int)(Math.random()*100)+1;
+                        result = ((int)(Math.random()* 1000)+1);
                         break;
                 }
-                System.out.print(numerator[0] + "" + sign + "" + numerator[1] + "=");
+
+                arithmeticStr = numerator[0] + " " + sign + " " + numerator[1] ;
+                if (ArithmeticIsRepeat(arithmeticArray, arithmeticStr, sign))
+                    continue;
+                System.out.print(arithmeticStr + "=");
+
                 while(IsError(error)){
                     inputC = input.next();
                     inputCount++;
 
                     //判断输入的分母是否为0
-                    if (inputC.indexOf("/")!=-1){
+                    if (inputC.indexOf("/") != -1){
                         String[] str = inputC.split("/");
                         if (str[1].equals("0")){
                             System.out.println("Error");
@@ -142,19 +183,16 @@ public class ElementaryArithmetic {
                     }
 
                     if (inputC.equals(String.valueOf(result))) {
-                        System.out.println("1");
                         System.out.println("True");
                         if (inputCount == 1)
                             trueCount++;
                         break;
                     } else if (inputC.equals("" + numerator[0] / numerator[1] ) && sign == '/') {
-
                         System.out.println("True");
                         if(inputCount == 1)
                             trueCount++;
                         break;
                     } else if (inputC.equals(numerator[0] + "/" + numerator[1])){
-                        System.out.println("3");
                         System.out.println("True");
                         if(inputCount == 1)
                             trueCount++;
@@ -165,14 +203,13 @@ public class ElementaryArithmetic {
                     System.out.println("Please input again:");
                 }
             } else {
-
                 inputCount = 0;     //重置输入次数
 
                 //当分子与分母相同时重置
                 while(numerator[0] == denominator[0])
-                    denominator[0]=(int)(Math.random()*10)+1;
+                    denominator[0]=(int)(Math.random()*RandomRange)+1;
                 while(numerator[1] == denominator[1])
-                    denominator[1]=(int)(Math.random()*10)+1;
+                    denominator[1]=(int)(Math.random()*RandomRange)+1;
 
                 //最简化分子式
                 resultOfProperFractionForDivisor = divisor(numerator[0],denominator[0]);
@@ -202,7 +239,10 @@ public class ElementaryArithmetic {
                 int resultOfNumerator,resultOfDenominator;      //结果的分子与分母
                 int resultForDivisorOfOutcome;                  //结果分子分母的最大公约数
 
-                switch (oprator) {
+                if((arithmeticModality = (int)(Math.random()*2)) == 0)
+                    denominator[0] = 1 ;
+
+                switch (operator) {
                     case 0:
                         sign = '+';
 
@@ -230,7 +270,7 @@ public class ElementaryArithmetic {
                         break;
 
                     case 2:
-                        sign = '*';
+                        sign = '×';
                         //求解并最简化
                         resultOfNumerator = numerator[0] * numerator[1];
                         resultOfDenominator = denominator[0] * denominator[1];
@@ -241,7 +281,7 @@ public class ElementaryArithmetic {
                         break;
 
                     case 3:
-                        sign = '/';
+                        sign = '÷';
 
                         //求解并最简化
                         resultOfNumerator = numerator[0] * denominator[1];
@@ -256,7 +296,14 @@ public class ElementaryArithmetic {
                         resultOfDenominator=2;
                         break;
                 }
-                System.out.print(numerator[0] + "/" + denominator[0] + "" + sign + "" + numerator[1] + "/" + denominator[1] + "=");
+                if(arithmeticModality == 1)
+                    arithmeticStr = numerator[0] + "/" + denominator[0] + " " + sign + " " + numerator[1] + "/" + denominator[1];
+                else
+                    arithmeticStr = numerator[0] + "" + sign + "" + numerator[1] + "/" + denominator[1];
+                if (ArithmeticIsRepeat(arithmeticArray, arithmeticStr, sign))
+                    continue;
+                System.out.print(arithmeticStr + "=");
+
                 while (IsError(error)){
                     inputC = input.next();
                     inputCount++;
