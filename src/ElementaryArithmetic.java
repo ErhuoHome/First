@@ -32,6 +32,14 @@ public class ElementaryArithmetic {
         return (denominator * numerator / temp);
     }
 
+    //错误,重新输入的判断
+    public static boolean IsError(int error){
+        if(error == 1)
+            return true;
+        else
+            return false;
+    }
+
     public static void main(String[] args) throws InterruptedException {
 
         int[] denominator=new int[3];    //分子分母声明
@@ -75,6 +83,9 @@ public class ElementaryArithmetic {
         while(num < count) {
             num++;
 
+            int error = 1;      //记录对错
+            int inputCount;     //输入次数计数
+
             //随机产生数值、运算符、计算形式
             arithmeticModality = (int)(Math.random()*2);
             oprator = (int)(Math.random()*4);
@@ -83,9 +94,8 @@ public class ElementaryArithmetic {
             denominator[0] = (int)(Math.random()*10)+1;
             denominator[1] = (int)(Math.random()*10)+1;
 
-            arithmeticModality = 0;
-
             if(arithmeticModality == 0) {
+                inputCount = 0;
                 switch (oprator) {
                     case 0:
                         sign = '+';
@@ -118,19 +128,46 @@ public class ElementaryArithmetic {
                         break;
                 }
                 System.out.print(numerator[0] + "" + sign + "" + numerator[1] + "=");
-                System.out.println("" + result);
-                inputC = input.next();
+                while(IsError(error)){
+                    inputC = input.next();
+                    inputCount++;
 
-                if (inputC.equals(String.valueOf(result))) {
-                    System.out.println("True");trueCount++;
-                } else if (inputC.equals("" + numerator[0] / numerator[1] )) {
-                    trueCount++;System.out.println("True");
-                } else if (inputC.equals(numerator[0] + "/" + numerator[1])){
-                    System.out.println("True");trueCount++;
-                } else {
-                    System.out.println("False");
+                    //判断输入的分母是否为0
+                    if (inputC.indexOf("/")!=-1){
+                        String[] str = inputC.split("/");
+                        if (str[1].equals("0")){
+                            System.out.println("Error");
+                            System.exit(0);
+                        }
+                    }
+
+                    if (inputC.equals(String.valueOf(result))) {
+                        System.out.println("1");
+                        System.out.println("True");
+                        if (inputCount == 1)
+                            trueCount++;
+                        break;
+                    } else if (inputC.equals("" + numerator[0] / numerator[1] ) && sign == '/') {
+
+                        System.out.println("True");
+                        if(inputCount == 1)
+                            trueCount++;
+                        break;
+                    } else if (inputC.equals(numerator[0] + "/" + numerator[1])){
+                        System.out.println("3");
+                        System.out.println("True");
+                        if(inputCount == 1)
+                            trueCount++;
+                        break;
+                    } else {
+                        System.out.println("False");
+                    }
+                    System.out.println("Please input again:");
                 }
             } else {
+
+                inputCount = 0;     //重置输入次数
+
                 //当分子与分母相同时重置
                 while(numerator[0] == denominator[0])
                     denominator[0]=(int)(Math.random()*10)+1;
@@ -220,22 +257,42 @@ public class ElementaryArithmetic {
                         break;
                 }
                 System.out.print(numerator[0] + "/" + denominator[0] + "" + sign + "" + numerator[1] + "/" + denominator[1] + "=");
-                inputC = input.next();
+                while (IsError(error)){
+                    inputC = input.next();
+                    inputCount++;
 
-                //判断对错
-                if(inputC.equals(resultOfNumerator + "/" + resultOfDenominator)){
-                    trueCount++;System.out.println("True");
-                } else if (inputC.equals('1') && resultOfNumerator == resultOfDenominator) {
-                    trueCount++;System.out.println("True");
-                } else if (inputC.equals('0') && resultOfNumerator == 0){
-                    trueCount++;System.out.println("True");
-                } else if (inputC.equals("-" + resultOfNumerator + "/" + resultOfDenominator)) {
-                    trueCount++;System.out.println("True");
-                } else if (resultOfDenominator == 1 && inputC.equals(""+resultOfNumerator)) {
-                    trueCount++;System.out.println("True");
-                } else {
-                    System.out.println("False");
+                    //判断对错
+                    if(inputC.equals(resultOfNumerator + "/" + resultOfDenominator)){
+                        System.out.println("True");
+                        if (inputCount == 1)
+                            trueCount++;
+                           break;
+                    } else if (inputC.equals('1') && resultOfNumerator == resultOfDenominator) {
+                       System.out.println("True");
+                       if (inputCount == 1)
+                           trueCount++;
+                       break;
+                    } else if (inputC.equals('0') && resultOfNumerator == 0){
+                        System.out.println("True");
+                        if (inputCount == 1)
+                            trueCount++;
+                        break;
+                    } else if (inputC.equals("-" + resultOfNumerator + "/" + resultOfDenominator)) {
+                        System.out.println("True");
+                        if(inputCount == 1)
+                            trueCount++;
+                        break;
+                    } else if (resultOfDenominator == 1 && inputC.equals(""+resultOfNumerator)) {
+                        System.out.println("True");
+                        if (inputCount == 1)
+                            trueCount++;
+                        break;
+                    } else {
+                        System.out.println("False");
+                    }
+                    System.out.println("Please input again:");
                 }
+
             }
         }
         System.out.println("True:"+trueCount);
